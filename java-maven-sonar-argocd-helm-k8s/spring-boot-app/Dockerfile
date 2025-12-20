@@ -1,13 +1,10 @@
-# You can change this base image to anything else
-# But make sure to use the correct version of Java
-FROM eclipse-temurin:17-jre-alpine
+FROM maven:3.8-openjdk-17-slim
 
-# Simply the artifact path
-ARG artifact=target/spring-boot-web.jar
+# Install Docker CLI
+RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /opt/app
+# Set user to root to allow Docker access
+USER root
 
-COPY ${artifact} app.jar
-
-# This should not be changed
-ENTRYPOINT ["java","-jar","app.jar"]
+# Keep container running
+CMD ["tail", "-f", "/dev/null"]
